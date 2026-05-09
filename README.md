@@ -61,40 +61,18 @@ Frontend: http://localhost:5173
 
 Backend: http://localhost:5000
 
-## Vercel Deployment
-
-This repo is set up for a split Vercel deployment:
-
-- Frontend project root: `frontend`
-- Backend project root: `backend`
-
-### Frontend on Vercel
-
-- Import the GitHub repo into Vercel
-- Set the root directory to `frontend`
-- Add `VITE_API_URL` pointing to the deployed backend URL
-- Deploy using the default Vite build
-
-### Backend on Vercel
-
-- Import the same GitHub repo into a second Vercel project
-- Set the root directory to `backend`
-- Add `MONGODB_URI` for a MongoDB Atlas database
-- Add `CLIENT_ORIGIN` with the deployed frontend URL
-- Deploy the backend project
-
-The backend is exposed through Vercel's function entry at `backend/api/index.js`, and the frontend uses polling so the slot availability stays fresh without a persistent socket connection.
-
 ## Demo Notes
 
 - Open the expert list and show search/filter/pagination
 - Open an expert detail page and demonstrate automatic availability refresh
 - Submit a booking and show the success state
 - Use My Bookings to show booking status by email
-- Open the Admin page and update a booking from Pending to Confirmed or Completed
+- Show the status update API in a REST client or backend logs if needed
 
 ## Submission Checklist
 
 - GitHub repository link
 - One demo video of the working app
-- Deployed links for frontend and backend
+- Deployed frontend link
+- Deployed backend link or API URL
+- MongoDB Atlas connection configured in production

@@ -4,3 +4,10 @@ backend/.env
 frontend/.env
 dist
 coverage
+.vercel
+backend_prod_experts.json
+frontend_deploy_root.html
+frontend_deploy_asset.txt
+frontend/frontend_index.html
+frontend/asset.js
+frontend/asset_preview.txt
