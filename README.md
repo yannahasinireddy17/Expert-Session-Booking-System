@@ -61,6 +61,31 @@ Frontend: http://localhost:5173
 
 Backend: http://localhost:5000
 
+## Deployment
+
+### Backend on Render
+
+The backend is configured for Render in [render.yaml](render.yaml).
+
+1. Create a new Render Web Service from this GitHub repo.
+2. Use the root `render.yaml` file or set the service manually.
+3. Add these environment variables on Render:
+	- `MONGODB_URI` from MongoDB Atlas
+	- `CLIENT_ORIGIN` set to your deployed frontend URL
+	- `NODE_ENV=production`
+4. Deploy the backend and copy the public URL.
+
+### Frontend on Vercel
+
+1. Import the same GitHub repo into Vercel.
+2. Set the root directory to `frontend`.
+3. Add these environment variables in Vercel:
+	- `VITE_API_URL` = your Render backend URL
+	- `VITE_SOCKET_URL` = your Render backend URL
+4. Deploy the frontend.
+
+Because the app uses Socket.io for real-time slot updates, the backend should stay on a persistent Node host like Render rather than a serverless-only setup.
+
 ## Demo Notes
 
 - Open the expert list and show search/filter/pagination
