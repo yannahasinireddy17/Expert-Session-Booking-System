@@ -1,5 +1,11 @@
 {
   "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://expert-session-booking-system-1.onrender.com/$1"
+    }
+  ],
   "routes": [
     { "handle": "filesystem" },
     {

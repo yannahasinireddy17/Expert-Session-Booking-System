@@ -1,12 +1,9 @@
 import axios from 'axios';
 
-const renderApiUrl = 'https://expert-session-booking-system-1.onrender.com';
 const configuredApiUrl = import.meta.env.VITE_API_URL;
 
-const baseURL =
-  configuredApiUrl && !configuredApiUrl.includes('expert-booking-backend-phi.vercel.app')
-    ? configuredApiUrl
-    : renderApiUrl;
+// Route through the current origin by default so Vercel can proxy to the backend.
+const baseURL = configuredApiUrl || '/api';
 
 export const api = axios.create({
   baseURL
