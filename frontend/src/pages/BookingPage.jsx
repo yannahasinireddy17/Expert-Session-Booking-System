@@ -3,6 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../api/client';
 import LoadingState from '../components/LoadingState';
 import ErrorState from '../components/ErrorState';
+import { getStoredUser, isValidEmail } from '../utils/auth';
 
 const REFRESH_INTERVAL_MS = 5000;
 
@@ -25,6 +26,18 @@ const BookingPage = () => {
   const [success, setSuccess] = useState('');
   const [form, setForm] = useState(emptyForm);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const user = getStoredUser();
+    if (user) {
+      setForm((prev) => ({
+        ...prev,
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || ''
+      }));
+    }
+  }, []);
 
   useEffect(() => {
     const presetDate = searchParams.get('date') || '';
@@ -85,7 +98,7 @@ const BookingPage = () => {
     if (!form.name.trim()) {
       return 'Name is required';
     }
-    if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+    if (!isValidEmail(form.email)) {
       return 'Valid email is required';
     }
     if (!form.phone.trim()) {
@@ -120,7 +133,12 @@ const BookingPage = () => {
       });
 
       setSuccess('Booking successful. You will receive status updates soon.');
-      setForm((prev) => ({ ...emptyForm, email: prev.email }));
+      setForm((prev) => ({
+        ...emptyForm,
+        name: prev.name,
+        email: prev.email,
+        phone: prev.phone
+      }));
 
       const response = await api.get(`/experts/${expertId}`);
       setExpert(response.data.data);

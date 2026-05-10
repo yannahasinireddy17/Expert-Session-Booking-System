@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import LoadingState from '../components/LoadingState';
 import ErrorState from '../components/ErrorState';
+import { getStoredUser, isValidEmail } from '../utils/auth';
 
 const MyBookingsPage = () => {
   const [email, setEmail] = useState('');
@@ -9,11 +10,19 @@ const MyBookingsPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    const user = getStoredUser();
+
+    if (user?.email) {
+      setEmail(user.email);
+    }
+  }, []);
+
   const fetchBookings = async (event) => {
     event.preventDefault();
     setError('');
 
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
+    if (!isValidEmail(email)) {
       setError('Enter a valid email to fetch your bookings');
       return;
     }
