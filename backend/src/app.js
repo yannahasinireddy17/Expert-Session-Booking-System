@@ -9,10 +9,42 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
 
+const normalizeOrigin = (value) => {
+  if (!value) {
+    return '';
+  }
+
+  try {
+    return new URL(value).origin;
+  } catch {
+    return value.trim().replace(/\/+$/, '');
+  }
+};
+
+const configuredOrigins = (process.env.CLIENT_ORIGIN || '')
+  .split(',')
+  .map((item) => normalizeOrigin(item))
+  .filter(Boolean);
+
+const defaultOrigins = ['http://localhost:5173', 'https://expert-booking-frontend.vercel.app'];
+const allowedOrigins = new Set([...configuredOrigins, ...defaultOrigins]);
+
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || '*'
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.has('*')) {
+        return callback(null, true);
+      }
+
+      const normalized = normalizeOrigin(origin);
+
+      if (allowedOrigins.has(normalized)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error('CORS origin not allowed'));
+    }
   })
 );
 app.use(express.json());
