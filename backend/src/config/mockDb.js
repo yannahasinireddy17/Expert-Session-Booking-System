@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const dbPath = path.join(__dirname, '../../data.json');
+let persistenceDisabled = false;
 
 let db = {
   experts: [],
@@ -19,7 +20,23 @@ const loadDb = () => {
 };
 
 const saveDb = () => {
-  fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+  if (persistenceDisabled) {
+    return;
+  }
+
+  try {
+    fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+  } catch (error) {
+    const writeBlocked = ['EROFS', 'EPERM', 'EACCES'].includes(error && error.code);
+
+    if (writeBlocked) {
+      persistenceDisabled = true;
+      console.warn('⚠ Mock DB persistence disabled (read-only filesystem). Using in-memory data only.');
+      return;
+    }
+
+    throw error;
+  }
 };
 
 const initializeExperts = () => {
