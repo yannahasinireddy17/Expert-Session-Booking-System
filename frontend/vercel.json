@@ -5,12 +5,10 @@
       "source": "/api/(.*)",
       "destination": "https://expert-session-booking-system-1.onrender.com/$1"
     }
-  ],
-  "routes": [
-    { "handle": "filesystem" },
+    ,
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
