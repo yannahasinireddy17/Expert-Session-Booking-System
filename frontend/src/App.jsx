@@ -18,7 +18,6 @@ const App = () => {
             Experts
           </NavLink>
           <NavLink to="/my-bookings">My Bookings</NavLink>
-          <NavLink to="/admin/bookings">Admin</NavLink>
         </nav>
       </header>
 
