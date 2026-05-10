@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// Always use the current origin proxy so deployment env vars cannot point back to the old backend.
-const baseURL = '/api';
+const baseURL = 'https://expert-session-booking-system-1.onrender.com';
 
 export const api = axios.create({
   baseURL
